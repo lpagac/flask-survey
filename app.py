@@ -36,4 +36,23 @@ def show_question(question_num):
                            choices=curr_choices)
 
 
-@app.route()
+@app.route('/answer', methods=["POST"])
+def grab_answer():
+    """ Grabs answer from form for question and adds to response list
+        Redirects to next question """
+
+    curr_answer = request.form["answer"]
+    responses.append(curr_answer)
+
+    if len(responses) == len(survey.questions):
+        responses[:] = []
+        return redirect('/thankyou')
+
+    return redirect(f"/questions/{len(responses)}")
+
+
+@app.route('/thankyou')
+def show_thankyou():
+    """ Display completion page with thank you """
+
+    return render_template('completion.html')

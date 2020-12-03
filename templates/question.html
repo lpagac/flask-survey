@@ -6,9 +6,9 @@
   <form action="/answer" method="POST">
 
       <!-- you should have one item like this for every choice -->
-      <p>
-        <label for="name">Here are your choices!</label>
+      <p>Here are your choices:
         {% for choice in choices %}
+          <label for="name">{{ choice }}</label>
           <input
               type="radio"
               name="answer"
