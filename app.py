@@ -12,7 +12,7 @@ responses = []
 
 
 @app.route('/')
-def start_survey():
+def show_start():
     """ Shows survey home page for user to select 'start' """
 
     return render_template('survey_start.html', title=survey.title,
@@ -20,18 +20,20 @@ def start_survey():
 
 
 @app.route('/begin', methods=["POST"])
-def direct_to_question():
+def start_survey():
     """ Redirects to first question page  """
 
+    responses.clear()
+    
     return redirect(f"/questions/{len(responses)}")
 
 
-@app.route('/questions/<question_num>')
+@app.route('/questions/<int:question_num>')
 def show_question(question_num):
     """ Display question page to user """
 
-    curr_question = survey.questions[len(responses)].question
-    curr_choices = survey.questions[len(responses)].choices
+    curr_question = survey.questions[question_num].question
+    curr_choices = survey.questions[question_num].choices
     return render_template('question.html', question=curr_question,
                            choices=curr_choices)
 
@@ -45,7 +47,6 @@ def grab_answer():
     responses.append(curr_answer)
 
     if len(responses) == len(survey.questions):
-        responses[:] = []
         return redirect('/thankyou')
 
     return redirect(f"/questions/{len(responses)}")
