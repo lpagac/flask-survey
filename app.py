@@ -23,8 +23,6 @@ def start_survey():
 
     session[RESPONSE_STORAGE_KEY] = []
 
-    # session["start_key"] = True
-
     return redirect('/questions/0')
 
 
