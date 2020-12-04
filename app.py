@@ -14,8 +14,6 @@ RESPONSE_STORAGE_KEY = 'responses'
 def show_start():
     """ Shows survey home page for user to select 'start' """
 
-    session[RESPONSE_STORAGE_KEY] = []
-
     return render_template('survey_start.html', survey=survey)
 
 
@@ -23,7 +21,9 @@ def show_start():
 def start_survey():
     """ Redirects to first question page  """
 
-    session["start_key"] = True
+    session[RESPONSE_STORAGE_KEY] = []
+
+    # session["start_key"] = True
 
     return redirect('/questions/0')
 
@@ -32,9 +32,10 @@ def start_survey():
 def show_question(question_num):
     """ Display question page to user """
 
-    if session.get("start_key"):
-        responses = session[RESPONSE_STORAGE_KEY]
-    else:
+    responses = session.get(RESPONSE_STORAGE_KEY)
+
+    if responses is None:
+        flash("Please start survey!")
         return redirect('/')
 
     if len(responses) == len(survey.questions):
@@ -69,5 +70,7 @@ def grab_answer():
 @app.route('/thankyou')
 def show_thankyou():
     """ Display completion page with thank you """
+
+    session.pop(RESPONSE_STORAGE_KEY)
 
     return render_template('completion.html')
