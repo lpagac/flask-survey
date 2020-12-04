@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <h1>{{ question }}</h1>
+  <h1>{{ question.question }}</h1>
 
   <form action="/answer" method="POST">
 
       <!-- you should have one item like this for every choice -->
       <p>Here are your choices:
-        {% for choice in choices %}
+        {% for choice in question.choices %}
           <label for="name">{{ choice }}</label>
           <input
               type="radio"
